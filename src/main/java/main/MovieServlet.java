@@ -60,14 +60,30 @@ public class MovieServlet extends HttpServlet {
 
         for (Movie movie : movies){
             if (movie.getId() == targetId){
-                movie.setTitle(updateMovie.getTitle());
-                movie.setRating(updateMovie.getRating());
-                movie.setPoster(updateMovie.getPoster());
-                movie.setYear(updateMovie.getYear());
-                movie.setGenre(updateMovie.getGenre());
-                movie.setDirector(updateMovie.getDirector());
-                movie.setPlot(updateMovie.getPlot());
-                movie.setActors(updateMovie.getActors());
+                if (updateMovie.getTitle() != null){
+                    movie.setTitle(updateMovie.getTitle());
+                }
+                if (updateMovie.getRating() != null){
+                    movie.setRating(updateMovie.getRating());
+                }
+                if (updateMovie.getPoster() != null){
+                    movie.setPoster(updateMovie.getPoster());
+                }
+                if (updateMovie.getYear() != null){
+                    movie.setYear(updateMovie.getYear());
+                }
+                if (updateMovie.getGenre() != null){
+                    movie.setGenre(updateMovie.getGenre());
+                }
+                if (updateMovie.getDirector() != null){
+                    movie.setDirector(updateMovie.getDirector());
+                }
+                if (updateMovie.getPlot() != null){
+                    movie.setPlot(updateMovie.getPlot());
+                }
+                if (updateMovie.getActors() != null){
+                    movie.setActors(updateMovie.getActors());
+                }
             }
         }
 
@@ -80,4 +96,20 @@ public class MovieServlet extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response){
+        response.setContentType("application/json");
+
+        String [] uriParts = request.getRequestURI().split("/");
+        int targetId = Integer.parseInt(uriParts[uriParts.length - 1]);
+
+        movies.removeIf(movie -> movie.getId() == targetId);
+
+        try {
+            PrintWriter out = response.getWriter();
+            out.println("Movie DELETE successful");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
