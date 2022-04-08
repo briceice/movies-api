@@ -1,6 +1,7 @@
 package main;
 
 import Dao.InMemoryMoviesDao;
+import Dao.MySqlMoviesDao;
 import com.google.gson.Gson;
 import data.Movie;
 
@@ -15,7 +16,8 @@ import java.sql.SQLException;
 @WebServlet(name="MovieServlet", urlPatterns="/movies/*")
 public class MovieServlet extends HttpServlet {
 
-    InMemoryMoviesDao moviesDao = new InMemoryMoviesDao();
+//    InMemoryMoviesDao moviesDao = new InMemoryMoviesDao();
+    MySqlMoviesDao moviesDao = new MySqlMoviesDao();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response){
@@ -78,5 +80,11 @@ public class MovieServlet extends HttpServlet {
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void destroy() {
+        moviesDao.cleanUp();
+        super.destroy();
     }
 }

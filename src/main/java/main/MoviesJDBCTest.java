@@ -1,7 +1,6 @@
 package main;
 
 import com.mysql.cj.jdbc.Driver;
-import data.Car;
 import data.Movie;
 
 import java.sql.*;
