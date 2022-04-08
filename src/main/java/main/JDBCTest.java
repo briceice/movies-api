@@ -12,7 +12,7 @@ public class JDBCTest {
     public static void main(String[] args) throws SQLException {
         DriverManager.registerDriver(new Driver());
         connection = DriverManager.getConnection(
-                "jdbc:mysql://" + Config.DB_HOST + ":3306/brice?allowPublicKeyRetrieval=true&useSSL=false",
+                "jdbc:mysql://" + Config.DB_HOST + ":3306/brice",
                 Config.DB_USER,
                 Config.DB_PW
         );
