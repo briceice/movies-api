@@ -19,13 +19,29 @@ public class MovieServlet extends HttpServlet {
 //    InMemoryMoviesDao moviesDao = new InMemoryMoviesDao();
     MySqlMoviesDao moviesDao = new MySqlMoviesDao();
 
+    public boolean isNumeric(String string){
+        try {
+            Double d = Double.parseDouble(string);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response){
         response.setContentType("application/json");
         PrintWriter out;
         try {
             out = response.getWriter();
-            String movieString = new Gson().toJson(moviesDao.all().toArray());
+            String [] uriParts = request.getRequestURI().split("/");
+            String movieString;
+            if (isNumeric(uriParts[uriParts.length - 1])){
+                int targetId = Integer.parseInt(uriParts[uriParts.length - 1]);
+                movieString = new Gson().toJson(moviesDao.findOne(targetId));
+            } else {
+                movieString = new Gson().toJson(moviesDao.all().toArray());
+            }
             out.println(movieString);
         } catch (IOException | SQLException e) {
             e.printStackTrace();

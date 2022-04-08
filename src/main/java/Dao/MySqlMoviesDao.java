@@ -49,60 +49,55 @@ public class MySqlMoviesDao implements MoviesDao{
         return movies;
     }
 
-    // TODO: switch statement for prepared statement
     @Override
-    public Movie findOne(int idInput) {
-        Statement st;
+    public Movie findOne(int id) throws SQLException {
+        PreparedStatement ps;
         Movie movie = null;
-        try {
-            st = connection.createStatement();
-            ResultSet movieRows = st.executeQuery("select title, year, director, actors, rating, poster, genre, plot from movies where id = idInput");
 
-            while (movieRows.next()) {
-                movie = new Movie(movieRows.getString("title"),
-                        movieRows.getDouble("rating"),
-                        movieRows.getString("poster"),
-                        movieRows.getInt("year"),
-                        movieRows.getString("genre"),
-                        movieRows.getString("director"),
-                        movieRows.getString("plot"),
-                        movieRows.getString("actors"),
-                        movieRows.getInt("id"));
-            }
-            st.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        ps = connection.prepareStatement("select * from movies where id = ?");
+        ps.setInt(1, id);
+
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()) {
+            movie = new Movie(rs.getString("title"),
+                    rs.getDouble("rating"),
+                    rs.getString("poster"),
+                    rs.getInt("year"),
+                    rs.getString("genre"),
+                    rs.getString("director"),
+                    rs.getString("plot"),
+                    rs.getString("actors"),
+                    rs.getInt("id"));
         }
+        rs.close();
+        ps.close();
+
         return movie;
     }
 
     @Override
-    public void insert(Movie movie) {
+    public void insert(Movie movie) throws SQLException {
         PreparedStatement ps;
-        try {
-            ps = connection.prepareStatement("insert into movies " +
-                    "(title, year, director, actors, rating, poster, genre, plot) " +
-                    "values (?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1, movie.getTitle());
-            ps.setInt(2, movie.getYear());
-            ps.setString(3, movie.getDirector());
-            ps.setString(4, movie.getActors());
-            ps.setDouble(5, movie.getRating());
-            ps.setString(6, movie.getPoster());
-            ps.setString(7, movie.getGenre());
-            ps.setString(8, movie.getPlot());
-            ps.executeUpdate();
+        ps = connection.prepareStatement("insert into movies " +
+                "(title, year, director, actors, rating, poster, genre, plot) " +
+                "values (?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+        ps.setString(1, movie.getTitle());
+        ps.setInt(2, movie.getYear());
+        ps.setString(3, movie.getDirector());
+        ps.setString(4, movie.getActors());
+        ps.setDouble(5, movie.getRating());
+        ps.setString(6, movie.getPoster());
+        ps.setString(7, movie.getGenre());
+        ps.setString(8, movie.getPlot());
+        ps.executeUpdate();
 
-            ResultSet newKeys = ps.getGeneratedKeys();
-            newKeys.next();
-            int newId = newKeys.getInt(1);
-            System.out.println("new record id is " + newId);
+        ResultSet newKeys = ps.getGeneratedKeys();
+        newKeys.next();
+        int newId = newKeys.getInt(1);
+        System.out.println("new record id is " + newId);
 
-            newKeys.close();
-            ps.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        newKeys.close();
+        ps.close();
     }
 
     @Override
@@ -112,10 +107,17 @@ public class MySqlMoviesDao implements MoviesDao{
         }
     }
 
-    // TODO: needs an id parameter?
+    // TODO:
+    // GET movie object to be updated by id
+    // set rows based on movie parameter values
+    // POST movie object with updated values
     @Override
     public void update(Movie movie) throws SQLException {
-
+        PreparedStatement ps;
+        ps = connection.prepareStatement("update movies set title = ? where id = ?");
+        ps.setString(1, movie.getTitle());
+        ps.setInt(2, movie.getId());
+        ps.executeUpdate();
     }
 
     @Override
