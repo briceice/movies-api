@@ -41,7 +41,7 @@ public class MoviesJDBCTest {
         ArrayList<Movie> movies = new ArrayList<>();
 
         Statement st = connection.createStatement();
-        ResultSet movieRows = st.executeQuery("select title, year, director, actors, rating, poster, genre, plot, id from movies");
+        ResultSet movieRows = st.executeQuery("select * from movies");
         // iterate over the rows and print out fields for each row
         while(movieRows.next()) { // for each row in the resultSet
             // make a car object from that row
@@ -53,6 +53,11 @@ public class MoviesJDBCTest {
                     movieRows.getString("director"),
                     movieRows.getString("plot"),
                     movieRows.getString("actors"),
+                    movieRows.getString("imDbID"),
+                    movieRows.getString("runtime"),
+                    movieRows.getString("MPAA"),
+                    movieRows.getString("trailerURL"),
+                    movieRows.getBoolean("favorite"),
                     movieRows.getInt("id"));
 
             movies.add(movie);

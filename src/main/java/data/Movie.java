@@ -10,12 +10,18 @@ public class Movie {
     private String director;
     private String plot;
     private String actors;
+    private String imDbID;
+    private String runtime;
+    private String MPAA;
+    private String trailerURL;
+    private Boolean favorite;
     private int id;
 
     public Movie() {
     }
 
-    public Movie(String title, Double rating, String poster, Integer year, String genre, String director, String plot, String actors, int id) {
+    public Movie(String title, Double rating, String poster, Integer year, String genre, String director, String plot, String actors,
+                 String imDbID, String runtime, String MPAA, String trailerURL, Boolean favorite, int id) {
         this.title = title;
         this.rating = rating;
         this.poster = poster;
@@ -24,6 +30,11 @@ public class Movie {
         this.director = director;
         this.plot = plot;
         this.actors = actors;
+        this.imDbID = imDbID;
+        this.runtime = runtime;
+        this.MPAA = MPAA;
+        this.trailerURL = trailerURL;
+        this.favorite = favorite;
         this.id = id;
     }
 
@@ -89,6 +100,46 @@ public class Movie {
 
     public void setActors(String actors) {
         this.actors = actors;
+    }
+
+    public String getImDbID() {
+        return imDbID;
+    }
+
+    public void setImDbID(String imDbID) {
+        this.imDbID = imDbID;
+    }
+
+    public String getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(String runtime) {
+        this.runtime = runtime;
+    }
+
+    public String getMPAA() {
+        return MPAA;
+    }
+
+    public void setMPAA(String MPAA) {
+        this.MPAA = MPAA;
+    }
+
+    public String getTrailerURL() {
+        return trailerURL;
+    }
+
+    public void setTrailerURL(String trailerURL) {
+        this.trailerURL = trailerURL;
+    }
+
+    public Boolean getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        this.favorite = favorite;
     }
 
     public int getId() {
