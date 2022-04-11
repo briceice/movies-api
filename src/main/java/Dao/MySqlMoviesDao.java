@@ -107,17 +107,48 @@ public class MySqlMoviesDao implements MoviesDao{
         }
     }
 
-    // TODO:
-    // GET movie object to be updated by id
-    // set rows based on movie parameter values
-    // POST movie object with updated values
     @Override
     public void update(Movie movie) throws SQLException {
+        // 1. fetch the movie to be changed from the database
+        Movie updateMovie = findOne(movie.getId());
+
+        // 2. change the fields in the fetched movie that the movie parameter has changed (look for != null)
+        if(movie.getTitle() != null) {
+            updateMovie.setTitle(movie.getTitle());
+        }
+        if(movie.getRating() != null) {
+            updateMovie.setRating(movie.getRating());
+        }
+        if(movie.getPoster() != null) {
+            updateMovie.setPoster(movie.getPoster());
+        }
+        if(movie.getYear() != null) {
+            updateMovie.setYear(movie.getYear());
+        }
+        if(movie.getGenre() != null) {
+            updateMovie.setGenre(movie.getGenre());
+        }
+        if(movie.getPlot() != null) {
+            updateMovie.setPlot(movie.getPlot());
+        }
+        if(movie.getDirector() != null) {
+            updateMovie.setDirector(movie.getDirector());
+        }
+
+        // 3. do your update query
         PreparedStatement ps;
-        ps = connection.prepareStatement("update movies set title = ? where id = ?");
-        ps.setString(1, movie.getTitle());
-        ps.setInt(2, movie.getId());
+        ps = connection.prepareStatement("update movies set title = ?, rating = ?, poster = ?, year = ?, genre = ?," +
+                " plot = ?, director = ? where id = ?");
+        ps.setString(1, updateMovie.getTitle());
+        ps.setDouble(2, updateMovie.getRating());
+        ps.setString(3, updateMovie.getPoster());
+        ps.setInt(4, updateMovie.getYear());
+        ps.setString(5, updateMovie.getGenre());
+        ps.setString(6, updateMovie.getPlot());
+        ps.setString(7, updateMovie.getDirector());
+        ps.setInt(8, updateMovie.getId());
         ps.executeUpdate();
+        ps.close();
     }
 
     @Override
