@@ -159,12 +159,9 @@ public class MySqlMoviesDao implements MoviesDao{
         ps.close();
     }
 
-    public void cleanUp(){
+    @Override
+    public void cleanUp() throws SQLException{
         System.out.println("Calling cleanup...");
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        connection.close();
     }
 }

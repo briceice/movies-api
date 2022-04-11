@@ -66,6 +66,11 @@ public class InMemoryMoviesDao implements MoviesDao {
         }
     }
 
+    @Override
+    public void cleanUp() throws SQLException {
+
+    }
+
     // NO SUPPORT YET
     @Override
     public Movie findOne(int id) {

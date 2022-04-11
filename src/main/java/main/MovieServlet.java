@@ -1,7 +1,7 @@
 package main;
 
-import Dao.InMemoryMoviesDao;
-import Dao.MySqlMoviesDao;
+import Dao.MoviesDao;
+import Dao.MoviesDaoFactory;
 import com.google.gson.Gson;
 import data.Movie;
 
@@ -15,9 +15,7 @@ import java.sql.SQLException;
 
 @WebServlet(name="MovieServlet", urlPatterns="/movies/*")
 public class MovieServlet extends HttpServlet {
-
-//    InMemoryMoviesDao moviesDao = new InMemoryMoviesDao();
-    MySqlMoviesDao moviesDao = new MySqlMoviesDao();
+    private MoviesDao moviesDao = MoviesDaoFactory.getMoviesDao(MoviesDaoFactory.DaoType.MYSQL);
 
     public boolean isNumeric(String string){
         try {
@@ -100,7 +98,11 @@ public class MovieServlet extends HttpServlet {
 
     @Override
     public void destroy() {
-        moviesDao.cleanUp();
+        try {
+            moviesDao.cleanUp();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         super.destroy();
     }
 }
